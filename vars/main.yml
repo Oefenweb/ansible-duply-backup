@@ -1,2 +1,3 @@
 ---
 # vars file for duply-backup
+duply_backup_profile_directory: /etc/duply

@@ -1,2 +1,3 @@
 ---
 # defaults file for duply-backup
+duply_backup_profiles: []
