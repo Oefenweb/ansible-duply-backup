@@ -11,6 +11,17 @@ env:
 before_install:
   - sudo apt-get update -qq
 
+  # Install duplicity and duply.
+  - sudo apt-get install wget software-properties-common
+  - sudo add-apt-repository ppa:duplicity-team/ppa -y
+  - sudo apt-get update -qq
+  - sudo apt-get install duplicity
+
+  - sudo wget -q http://duply.net/tmp/duply.sh -O /usr/local/bin/duply
+  - sudo chmod 0755 /usr/local/bin/duply
+
+  - sudo mkdir -p /tmp/duply-backup/target
+
 install:
   # Install Ansible.
   - pip install ansible==$ANSIBLE_VERSION
@@ -31,6 +42,11 @@ script:
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
+
+  # Test duply backup
+  - sudo duply etc backup
+  # Test duply restore
+  - sudo duply etc restore /tmp/duply-backup/restore && sudo test -d /tmp/duply-backup/restore/skel
 
 notifications:
   email: false

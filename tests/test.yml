@@ -4,3 +4,12 @@
   remote_user: root
   roles:
     - ansible-duply-backup
+  vars:
+    duply_backup_profiles:
+      etc:
+        conf:
+          target: 'file:///tmp/duply-backup/target'
+          source: '/etc'
+        excludes:
+          - '+ /etc/skel'
+          - '- **'
