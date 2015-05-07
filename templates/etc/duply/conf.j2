@@ -9,8 +9,17 @@
 #        e.g. 'Mueller, Horst', 'Bernd' -> 'Mueller\, Horst, Bernd'
 #        as they are used to separate the entries
 #  GPG_PW='passphrase' - symmetric encryption using passphrase only
+{% if item.value.conf.gpg_key is defined %}
 GPG_KEY='{{ item.value.conf.gpg_key }}'
+{% else %}
+GPG_KEY='disabled'
+{% endif %}
+{% if item.value.conf.gpg_pw is defined %}
 GPG_PW='{{ item.value.conf.gpg_pw }}'
+{% else %}
+#GPG_PW='_GPG_PASSWORD_'
+{% endif %}
+
 # gpg encryption settings in detail (extended settings)
 #  the above settings translate to the following more specific settings
 #  GPG_KEYS_ENC='<keyid1>[,<keyid2>,...]' - list of pubkeys to encrypt to
