@@ -10,7 +10,11 @@ None
 
 #### Variables
 
-* `duply_backup_profiles`: [default: `[]`]: 
+* `duply_backup_profiles`: [default: `{}`]: Duply backup profiles
+
+* `duply_backup_gpg_pub_keys`: [default: `[]`]: Public keys to import
+* `duply_backup_gpg_ownertrusts`: [default: `[]`]: Owner trusts to import
+* `duply_backup_gpg_sec_keys`: [default: `[]`]: Private keys to import
 
 ## Dependencies
 

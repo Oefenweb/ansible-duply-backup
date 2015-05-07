@@ -1,0 +1,54 @@
+---
+# tasks file for duply-backup
+- name: create (profile) directories
+  file:
+    path: "{{ duply_backup_profile_directory }}/{{ item.key }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+  with_dict: duply_backup_profiles
+  tags: [configuration, duply-backup, duply-backup-profile]
+
+- name: configure configuration files
+  template:
+    src: etc/duply/conf.j2
+    dest: "{{ duply_backup_profile_directory }}/{{ item.key }}/conf"
+    owner: root
+    group: root
+    mode: 0600
+  with_dict: duply_backup_profiles
+  tags: [configuration, duply-backup, duply-backup-profile, duply-backup-profile-conf]
+
+- name: copy pre scripts
+  copy:
+    src: "{{ item.value.pre }}"
+    dest: "{{ duply_backup_profile_directory }}/{{ item.key }}/pre"
+    owner: root
+    group: root
+    mode: 0700
+  with_dict: duply_backup_profiles
+  when: item.value.pre is defined and item.value.pre
+  tags: [configuration, duply-backup, duply-backup-profile, duply-backup-profile-pre]
+
+- name: copy post scripts
+  copy:
+    src: "{{ item.value.post }}"
+    dest: "{{ duply_backup_profile_directory }}/{{ item.key }}/post"
+    owner: root
+    group: root
+    mode: 0700
+  with_dict: duply_backup_profiles
+  when: item.value.post is defined and item.value.post
+  tags: [configuration, duply-backup, duply-backup-profile, duply-backup-profile-post]
+
+- name: configure exclude files
+  template:
+    src: etc/duply/exclude.j2
+    dest: "{{ duply_backup_profile_directory }}/{{ item.key }}/exclude"
+    owner: root
+    group: root
+    mode: 0600
+  with_dict: duply_backup_profiles
+  when: item.value.excludes is defined and item.value.excludes
+  tags: [configuration, duply-backup, duply-backup-profile, duply-backup-profile-exclude]
