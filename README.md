@@ -10,7 +10,7 @@ None
 
 #### Variables
 
-None
+* `duply_backup_profiles`: [default: `[]`]: 
 
 ## Dependencies
 
