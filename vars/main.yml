@@ -1,2 +1,4 @@
 ---
 # vars file for duply-backup
+duply_backup_profile_directory: /etc/duply
+duply_backup_lock_directory: "/var/lib/ansible/duply-backup/lock"

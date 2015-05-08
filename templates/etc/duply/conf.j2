@@ -1,0 +1,261 @@
+# {{ ansible_managed }}
+
+# gpg encryption settings, simple settings:
+#  GPG_KEY='disabled' - disables encryption alltogether
+#  GPG_KEY='<key1>[,<key2>]'; GPG_PW='pass' - encrypt with keys,
+#   sign if secret key of key1 is available use GPG_PW for sign & decrypt
+#  Note: you can specify keys via all methods described in gpg manpage,
+#        section "How to specify a user ID", escape commas (,) via backslash (\)
+#        e.g. 'Mueller, Horst', 'Bernd' -> 'Mueller\, Horst, Bernd'
+#        as they are used to separate the entries
+#  GPG_PW='passphrase' - symmetric encryption using passphrase only
+{% if item.value.conf.gpg_key is defined %}
+GPG_KEY='{{ item.value.conf.gpg_key }}'
+{% else %}
+GPG_KEY='disabled'
+{% endif %}
+{% if item.value.conf.gpg_pw is defined %}
+GPG_PW='{{ item.value.conf.gpg_pw }}'
+{% else %}
+#GPG_PW='_GPG_PASSWORD_'
+{% endif %}
+# gpg encryption settings in detail (extended settings)
+#  the above settings translate to the following more specific settings
+#  GPG_KEYS_ENC='<keyid1>[,<keyid2>,...]' - list of pubkeys to encrypt to
+#  GPG_KEY_SIGN='<keyid1>|disabled' - a secret key for signing
+#  GPG_PW='<passphrase>' - needed for signing, decryption and symmetric
+#   encryption. If you want to deliver different passphrases for e.g.
+#   several keys or symmetric encryption plus key signing you can use
+#   gpg-agent. Simply make sure that GPG_AGENT_INFO is set in environment.
+#   also see "A NOTE ON SYMMETRIC ENCRYPTION AND SIGNING" in duplicity manpage
+# notes on en/decryption
+#  private key and passphrase will only be needed for decryption or signing.
+#  decryption happens on restore and incrementals (compare archdir contents).
+#  for security reasons it makes sense to separate the signing key from the
+#  encryption keys. https://answers.launchpad.net/duplicity/+question/107216
+{% if item.value.conf.gpg_keys_enc is defined %}
+GPG_KEYS_ENC='{{ item.value.conf.gpg_keys_enc }}'
+{% else %}
+#GPG_KEYS_ENC='<pubkey1>,<pubkey2>,...'
+{% endif %}
+{% if item.value.conf.gpg_key_sign is defined %}
+GPG_KEY_SIGN='{{ item.value.conf.gpg_key_sign }}'
+{% else %}
+#GPG_KEY_SIGN='<prvkey>'
+{% endif %}
+# set if signing key passphrase differs from encryption (key) passphrase
+# NOTE: available since duplicity 0.6.14, translates to SIGN_PASSPHRASE
+{% if item.value.conf.gpg_pw_sign is defined %}
+GPG_PW_SIGN='{{ item.value.conf.gpg_pw_sign }}'
+{% else %}
+#GPG_PW_SIGN='<signpass>'
+{% endif %}
+
+# gpg options passed from duplicity to gpg process (default='')
+# e.g. "--trust-model pgp|classic|direct|always"
+#   or "--compress-algo=bzip2 --bzip2-compress-level=9"
+#   or "--personal-cipher-preferences AES256,AES192,AES..."
+#   or "--homedir ~/.duply" - keep keyring and gpg settings duply specific
+#   or "--pinentry-mode loopback" - needed for GPG 2.1+ _and_
+#      also enable allow-loopback-pinentry in yaour gpg-agent.conf
+{% if item.value.conf.gpg_opts is defined %}
+GPG_OPTS='{{ item.value.conf.gpg_opts }}'
+{% else %}
+#GPG_OPTS=''
+{% endif %}
+
+# disable preliminary tests with the following setting
+{% if item.value.conf.gpg_test is defined and item.value.conf.gpg_test | bool == False %}
+GPG_TEST='disabled'
+{% else %}
+#GPG_TEST='disabled'
+{% endif %}
+
+# credentials & location of the backup target (URL-Format)
+# syntax is
+#   scheme://[user[:password]@]host[:port]/[/]path
+# eg.
+#   sftp://bob:secret@backupserver.com//home/bob/dupbkp
+# for details and available backends see duplicity manpage, section URL Format
+#   http://duplicity.nongnu.org/duplicity.1.html#sect8
+# probably one out of
+#   # for cloudfiles backend user id is CLOUDFILES_USERNAME, password is
+#   # CLOUDFILES_APIKEY, you might need to set CLOUDFILES_AUTHURL manually
+#   cf+http://[user:password@]container_name
+#   dpbx:///some_dir
+#   file://[relative|/absolute]/local/path
+#   ftp[s]://user[:password]@other.host[:port]/some_dir
+#   gdocs://user[:password]@other.host/some_dir
+#   # for the google cloud storage (since duplicity 0.6.22)
+#   # user/password are GS_ACCESS_KEY_ID/GS_SECRET_ACCESS_KEY
+#   gs://bucket[/prefix]
+#   hsi://user[:password]@other.host/some_dir
+#   imap[s]://user[:password]@host.com[/from_address_prefix]
+#   mega://user[:password]@mega.co.nz/some_dir
+#   rsync://user[:password]@host.com[:port]::[/]module/some_dir
+#   # rsync over ssh (only keyauth)
+#   rsync://user@host.com[:port]/[relative|/absolute]_path
+#   # for the s3 user/password are AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY
+#   s3://[user:password@]host/bucket_name[/prefix]
+#   s3+http://[user:password@]bucket_name[/prefix]
+#   # scp and sftp are aliases for the ssh backend
+#   ssh://user[:password]@other.host[:port]/[/]some_dir
+#   # for authenticated swift define TARGET_USER or SWIFT_USERNAME,
+#   # TARGET_PASS or SWIFT_PASSWORD, SWIFT_AUTHURL (mandatory, the path to
+#   # your identity service, omitting leads to an error with swift),
+#   # optionally SWIFT_AUTHVERSION (which defaults to "1")
+#   swift://container_name
+#   tahoe://alias/directory
+#   webdav[s]://user[:password]@other.host/some_dir
+# ATTENTION: characters other than A-Za-z0-9.-_.~ in the URL have
+#            to be replaced by their url encoded pendants, see
+#            http://en.wikipedia.org/wiki/Url_encoding
+#            if you define the credentials as TARGET_USER, TARGET_PASS below
+#            duply will try to url_encode them for you if the need arises
+TARGET='{{ item.value.conf.target }}'
+# optionally the username/password can be defined as extra variables
+# setting them here _and_ in TARGET results in an error
+{% if item.value.conf.target_user is defined %}
+TARGET_USER='{{ item.value.conf.target_user }}'
+{% else %}
+#TARGET_USER='_backend_username_'
+{% endif %}
+{% if item.value.conf.target_pass is defined %}
+TARGET_PASS='{{ item.value.conf.target_pass }}'
+{% else %}
+#TARGET_PASS='_backend_password_'
+{% endif %}
+
+# base directory to backup
+SOURCE='{{ item.value.conf.source }}'
+
+# a command that runs duplicity e.g.
+#  shape bandwidth use via trickle
+#  "trickle -s -u 640 -d 5120" # 5Mb up, 40Mb down"
+{% if item.value.conf.dupl_precmd is defined %}
+DUPL_PRECMD="{{ item.value.conf.dupl_precmd }}"
+{% else %}
+#DUPL_PRECMD=""
+{% endif %}
+
+# exclude folders containing exclusion file (since duplicity 0.5.14)
+# Uncomment the following two lines to enable this setting.
+{% if item.value.conf.exclude_if_present is defined %}
+FILENAME='{{ item.value.conf.exclude_if_present }}'
+DUPL_PARAMS="$DUPL_PARAMS --exclude-if-present '$FILENAME'"
+{% else %}
+#FILENAME='.duplicity-ignore'
+#DUPL_PARAMS="$DUPL_PARAMS --exclude-if-present '$FILENAME'"
+{% endif %}
+
+# Time frame for old backups to keep, Used for the "purge" command.
+# see duplicity man page, chapter TIME_FORMATS)
+{% if item.value.conf.max_age is defined %}
+MAX_AGE={{ item.value.conf.max_age }}
+{% else %}
+#MAX_AGE=1M
+{% endif %}
+
+# Number of full backups to keep. Used for the "purge-full" command.
+# See duplicity man page, action "remove-all-but-n-full".
+{% if item.value.conf.max_full_backups is defined %}
+MAX_FULL_BACKUPS={{ item.value.conf.max_full_backups }}
+{% else %}
+#MAX_FULL_BACKUPS=1
+{% endif %}
+
+# Number of full backups for which incrementals will be kept for.
+# Used for the "purge-incr" command.
+# See duplicity man page, action "remove-all-inc-of-but-n-full".
+{% if item.value.conf.max_fulls_with_incrs is defined %}
+MAX_FULLS_WITH_INCRS={{ item.value.conf.max_fulls_with_incrs }}
+{% else %}
+#MAX_FULLS_WITH_INCRS=1
+{% endif %}
+
+# activates duplicity --full-if-older-than option (since duplicity v0.4.4.RC3)
+# forces a full backup if last full backup reaches a specified age, for the
+# format of MAX_FULLBKP_AGE see duplicity man page, chapter TIME_FORMATS
+# Uncomment the following two lines to enable this setting.
+{% if item.value.conf.max_fullbkp_age is defined %}
+MAX_FULLBKP_AGE={{ item.value.conf.max_fullbkp_age }}
+DUPL_PARAMS="$DUPL_PARAMS --full-if-older-than $MAX_FULLBKP_AGE "
+{% else %}
+#MAX_FULLBKP_AGE=1M
+#DUPL_PARAMS="$DUPL_PARAMS --full-if-older-than $MAX_FULLBKP_AGE "
+{% endif %}
+
+# sets duplicity --volsize option (available since v0.4.3.RC7)
+# set the size of backup chunks to VOLSIZE MB instead of the default 25MB.
+# VOLSIZE must be number of MB's to set the volume size to.
+# Uncomment the following two lines to enable this setting.
+{% if item.value.conf.volsize is defined %}
+VOLSIZE={{ item.value.conf.volsize }}
+DUPL_PARAMS="$DUPL_PARAMS --volsize $VOLSIZE "
+{% else %}
+#VOLSIZE=50
+#DUPL_PARAMS="$DUPL_PARAMS --volsize $VOLSIZE "
+{% endif %}
+
+# verbosity of output (error 0, warning 1-2, notice 3-4, info 5-8, debug 9)
+# default is 4, if not set
+{% if item.value.conf.verbosity is defined %}
+VERBOSITY={{ item.value.conf.verbosity }}
+{% else %}
+#VERBOSITY=5
+{% endif %}
+
+# temporary file space. at least the size of the biggest file in backup
+# for a successful restoration process. (default is '/tmp', if not set)
+{% if item.value.conf.temp_dir is defined %}
+TEMP_DIR={{ item.value.conf.temp_dir }}
+{% else %}
+#TEMP_DIR=/tmp
+{% endif %}
+
+# Modifies archive-dir option (since 0.6.0) Defines a folder that holds
+# unencrypted meta data of the backup, enabling new incrementals without the
+# need to decrypt backend metadata first. If empty or deleted somehow, the
+# private key and it's password are needed.
+# NOTE: This is confidential data. Put it somewhere safe. It can grow quite
+#       big over time so you might want to put it not in the home dir.
+# default '~/.cache/duplicity/duply_<profile>/'
+# if set  '${ARCH_DIR}/<profile>'
+{% if item.value.conf.arch_dir is defined %}
+ARCH_DIR={{ item.value.conf.arch_dir }}
+{% else %}
+#ARCH_DIR=/some/space/safe/.duply-cache
+{% endif %}
+
+# DEPRECATED setting
+# sets duplicity --time-separator option (since v0.4.4.RC2) to allow users
+# to change the time separator from ':' to another character that will work
+# on their system.  HINT: For Windows SMB shares, use --time-separator='_'.
+# NOTE: '-' is not valid as it conflicts with date separator.
+# ATTENTION: only use this with duplicity < 0.5.10, since then default file
+#            naming is compatible and this option is pending depreciation
+{% if item.value.conf.time_separator is defined and item.value.conf.time_separator | bool == True %}
+DUPL_PARAMS="$DUPL_PARAMS --time-separator _ "
+{% else %}
+#DUPL_PARAMS="$DUPL_PARAMS --time-separator _ "
+{% endif %}
+
+# DEPRECATED setting
+# activates duplicity --short-filenames option, when uploading to a file
+# system that can't have filenames longer than 30 characters (e.g. Mac OS 8)
+# or have problems with ':' as part of the filename (e.g. Microsoft Windows)
+# ATTENTION: only use this with duplicity < 0.5.10, later versions default file
+#            naming is compatible and this option is pending depreciation
+{% if item.value.conf.short_filenames is defined and item.value.conf.short_filenames | bool == True %}
+DUPL_PARAMS="$DUPL_PARAMS --short-filenames "
+{% else %}
+#DUPL_PARAMS="$DUPL_PARAMS --short-filenames "
+{% endif %}
+
+# more duplicity command line options can be added in the following way
+# don't forget to leave a separating space char at the end
+{% if item.value.conf.dupl_params is defined %}
+DUPL_PARAMS="$DUPL_PARAMS {{ item.value.conf.dupl_params }} "
+{% else %}
+#DUPL_PARAMS="$DUPL_PARAMS --put_your_options_here "
+{% endif %}

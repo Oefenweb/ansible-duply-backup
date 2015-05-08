@@ -1,2 +1,7 @@
 ---
 # defaults file for duply-backup
+duply_backup_profiles: {}
+
+duply_backup_gpg_pub_keys: []
+duply_backup_gpg_ownertrusts: []
+duply_backup_gpg_sec_keys: []
