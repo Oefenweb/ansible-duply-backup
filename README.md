@@ -45,6 +45,16 @@ None
 * `duply_backup_gpg_ownertrusts`: [default: `[]`]: Owner trusts to import
 * `duply_backup_gpg_sec_keys`: [default: `[]`]: Private keys to import
 
+* `duply_backup_jobs`: [default: `[]`]: Duply backup jobs (scheduled by `cron.d`)
+* `duply_backup_jobs.{n}.name`: [required]: Description of a crontab entry, should be unique, and changing the value will result in a new cron task being created (e.g. `duply-backup-etc`)
+* `duply_backup_jobs.{n}.job`: [required]: The command to execute (e.g. `/usr/local/bin/duply etc backup`)
+* `duply_backup_jobs.{n}.state`: [default: `present`]: Whether to ensure the job is present or absent
+* `duply_backup_jobs.{n}.day`: [default: `*`]: Day of the month the job should run (`1-31`, `*`, `*/2`)
+* `duply_backup_jobs.{n}.hour`: [default: `*`]: Hour when the job should run (e.g. `0-23`, `*`, `*/2`)
+* `duply_backup_jobs.{n}.minute`: [default: `*`]: Minute when the job should run (e.g. `0-59`, `*`, `*/2`)
+* `duply_backup_jobs.{n}.month`: [default: `*`]: Month of the year the job should run (e.g `1-12`, `*`, `*/2`)
+* `duply_backup_jobs.{n}.weekday`: [default: `*`]: Day of the week that the job should run (e.g. `0-6` for Sunday-Saturday, `*`)
+
 ## Dependencies
 
 None
