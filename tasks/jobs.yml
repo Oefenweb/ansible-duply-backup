@@ -1,0 +1,16 @@
+---
+# tasks file for duply-backup
+- name: configure (cron) jobs
+  cron:
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    state: "{{ item.state | default('present') }}"
+    day: "{{ item.day | default('*') }}"
+    hour: "{{ item.hour | default('*') }}"
+    minute: "{{ item.minute | default('*') }}"
+    month: "{{ item.month | default('*') }}"
+    weekday: "{{ item.weekday | default('*') }}"
+    cron_file: duply-backup
+    user: root
+  with_items: duply_backup_jobs
+  tags: [configuration, duply-backup, duply-backup-jobs]
