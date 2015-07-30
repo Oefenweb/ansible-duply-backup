@@ -50,5 +50,4 @@
     group: root
     mode: 0600
   with_dict: duply_backup_profiles
-  when: item.value.excludes is defined and item.value.excludes
   tags: [configuration, duply-backup, duply-backup-profile, duply-backup-profile-exclude]
