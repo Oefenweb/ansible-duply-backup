@@ -163,6 +163,10 @@ gpg --output E6564C6E.sec.asc --armor --export-secret-key E6564C6E;
       - ../../../files/duply-backup/E6564C6E.ownertrust.txt
     duply_backup_gpg_sec_keys:
       - ../../../files/duply-backup/E6564C6E.sec.asc
+    duply_backup_jobs:
+      - name: duply-backup-etc
+        job: /usr/local/bin/duply etc backup
+        minute: "0"
 ```
 
 #### License
