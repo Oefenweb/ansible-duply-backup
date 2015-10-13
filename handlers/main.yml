@@ -1,4 +1,4 @@
----
 # handlers file for duply-backup
+---
 - name: update trustdb
   command: gpg --update-trustdb

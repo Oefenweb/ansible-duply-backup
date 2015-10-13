@@ -1,5 +1,5 @@
----
 # tasks file for duply-backup
+---
 - name: create (profile) directories
   file:
     path: "{{ duply_backup_profile_directory }}/{{ item.key }}"

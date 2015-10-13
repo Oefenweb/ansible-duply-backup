@@ -1,5 +1,5 @@
----
 # tasks file for duply-backup
+---
 - name: configure (cron) jobs
   cron:
     name: "{{ item.name }}"

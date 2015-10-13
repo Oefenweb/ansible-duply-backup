@@ -1,5 +1,5 @@
----
 # tasks file for duply-backup
+---
 - name: create (lock) directory
   file:
     path: "{{ duply_backup_lock_directory }}"
