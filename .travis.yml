@@ -44,10 +44,10 @@ before_install:
   - sudo apt-get update -qq
 
   # Install duplicity and duply.
-  - sudo apt-get install wget software-properties-common
-  - sudo add-apt-repository ppa:duplicity-team/ppa -y
+  - sudo apt-get install --yes wget software-properties-common
+  - sudo add-apt-repository --yes ppa:duplicity-team/ppa
   - sudo apt-get update -qq
-  - sudo apt-get install duplicity
+  - sudo apt-get install --yes duplicity
 
   - sudo wget -q http://duply.net/tmp/duply.sh -O /usr/local/bin/duply
   - sudo chmod 0755 /usr/local/bin/duply
