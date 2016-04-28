@@ -51,13 +51,21 @@ GPG_PW_SIGN='{{ item.value.conf.gpg_pw_sign }}'
 #GPG_PW_SIGN='<signpass>'
 {% endif %}
 
+# uncomment and set a file path or name force duply to use this gpg executable
+# available in duplicity 0.7.04 and above (currently unreleased 06/2015)
+{% if item.value.conf.gpg is defined %}
+GPG='{{ item.value.conf.gpg }}'
+{% else %}
+#GPG='/usr/local/gpg-2.1/bin/gpg'
+{% endif %}
+
 # gpg options passed from duplicity to gpg process (default='')
 # e.g. "--trust-model pgp|classic|direct|always"
 #   or "--compress-algo=bzip2 --bzip2-compress-level=9"
 #   or "--personal-cipher-preferences AES256,AES192,AES..."
 #   or "--homedir ~/.duply" - keep keyring and gpg settings duply specific
 #   or "--pinentry-mode loopback" - needed for GPG 2.1+ _and_
-#      also enable allow-loopback-pinentry in yaour gpg-agent.conf
+#      also enable allow-loopback-pinentry in your .gnupg/gpg-agent.conf
 {% if item.value.conf.gpg_opts is defined %}
 GPG_OPTS='{{ item.value.conf.gpg_opts }}'
 {% else %}
@@ -71,60 +79,52 @@ GPG_TEST='disabled'
 #GPG_TEST='disabled'
 {% endif %}
 
-# credentials & location of the backup target (URL-Format)
-# syntax is
+# backend, credentials & location of the backup target (URL-Format)
+# generic syntax is
 #   scheme://[user[:password]@]host[:port]/[/]path
 # eg.
 #   sftp://bob:secret@backupserver.com//home/bob/dupbkp
 # for details and available backends see duplicity manpage, section URL Format
-#   http://duplicity.nongnu.org/duplicity.1.html#sect8
-# probably one out of
-#   # for cloudfiles backend user id is CLOUDFILES_USERNAME, password is
-#   # CLOUDFILES_APIKEY, you might need to set CLOUDFILES_AUTHURL manually
-#   cf+http://[user:password@]container_name
-#   dpbx:///some_dir
-#   file://[relative|/absolute]/local/path
-#   ftp[s]://user[:password]@other.host[:port]/some_dir
-#   gdocs://user[:password]@other.host/some_dir
-#   # for the google cloud storage (since duplicity 0.6.22)
-#   # user/password are GS_ACCESS_KEY_ID/GS_SECRET_ACCESS_KEY
-#   gs://bucket[/prefix]
-#   hsi://user[:password]@other.host/some_dir
-#   imap[s]://user[:password]@host.com[/from_address_prefix]
-#   mega://user[:password]@mega.co.nz/some_dir
-#   rsync://user[:password]@host.com[:port]::[/]module/some_dir
-#   # rsync over ssh (only keyauth)
-#   rsync://user@host.com[:port]/[relative|/absolute]_path
-#   # for the s3 user/password are AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY
-#   s3://[user:password@]host/bucket_name[/prefix]
-#   s3+http://[user:password@]bucket_name[/prefix]
-#   # scp and sftp are aliases for the ssh backend
-#   ssh://user[:password]@other.host[:port]/[/]some_dir
-#   # for authenticated swift define TARGET_USER or SWIFT_USERNAME,
-#   # TARGET_PASS or SWIFT_PASSWORD, SWIFT_AUTHURL (mandatory, the path to
-#   # your identity service, omitting leads to an error with swift),
-#   # optionally SWIFT_AUTHVERSION (which defaults to "1")
-#   swift://container_name
-#   tahoe://alias/directory
-#   webdav[s]://user[:password]@other.host/some_dir
-# ATTENTION: characters other than A-Za-z0-9.-_.~ in the URL have
-#            to be replaced by their url encoded pendants, see
-#            http://en.wikipedia.org/wiki/Url_encoding
-#            if you define the credentials as TARGET_USER, TARGET_PASS below
-#            duply will try to url_encode them for you if the need arises
+#   http://duplicity.nongnu.org/duplicity.1.html#sect7
+# BE AWARE:
+#   some backends (cloudfiles, S3 etc.) need additional env vars to be set to
+#   work properly, read after the TARGET definition for more details.
+# ATTENTION:
+#   characters other than A-Za-z0-9.-_.~ in the URL have to be
+#   replaced by their url encoded pendants, see
+#     http://en.wikipedia.org/wiki/Url_encoding
+#   if you define the credentials as TARGET_USER, TARGET_PASS below $ME
+#   will try to url_encode them for you if the need arises.
 TARGET='{{ item.value.conf.target }}'
 # optionally the username/password can be defined as extra variables
 # setting them here _and_ in TARGET results in an error
+# ATTENTION:
+#   there are backends that do not support the user/pass auth scheme.
+#   prominent examples are S3, Azure, Cloudfiles. when in doubt consult the
+#   duplicity manpage. usually there is a NOTE section explaining if and which
+#   env vars should be set.
 {% if item.value.conf.target_user is defined %}
 TARGET_USER='{{ item.value.conf.target_user }}'
 {% else %}
-#TARGET_USER='_backend_username_'
+#TARGET_USER='${DEFAULT_TARGET_USER}'
 {% endif %}
 {% if item.value.conf.target_pass is defined %}
 TARGET_PASS='{{ item.value.conf.target_pass }}'
 {% else %}
-#TARGET_PASS='_backend_password_'
+#TARGET_PASS='${DEFAULT_TARGET_PASS}'
 {% endif %}
+# eg. for cloud files backend it might look like this (uncomment for use!)
+#export CLOUDFILES_USERNAME='someuser'
+#export CLOUDFILES_APIKEY='somekey'
+#export CLOUDFILES_AUTHURL ='someurl'
+# the following is an incomplete list (<backend>: comma separated env vars list)
+# Azure: AZURE_ACCOUNT_NAME, AZURE_ACCOUNT_KEY
+# Cloudfiles: CLOUDFILES_USERNAME, CLOUDFILES_APIKEY, CLOUDFILES_AUTHURL
+# Google Cloud Storage: GS_ACCESS_KEY_ID, GS_SECRET_ACCESS_KEY
+# Pydrive: GOOGLE_DRIVE_ACCOUNT_KEY, GOOGLE_DRIVE_SETTINGS
+# S3: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+# Swift: SWIFT_USERNAME, SWIFT_PASSWORD, SWIFT_AUTHURL,
+#        SWIFT_TENANTNAME OR SWIFT_PREAUTHURL, SWIFT_PREAUTHTOKEN
 
 # base directory to backup
 SOURCE='{{ item.value.conf.source }}'
@@ -136,6 +136,14 @@ SOURCE='{{ item.value.conf.source }}'
 DUPL_PRECMD="{{ item.value.conf.dupl_precmd }}"
 {% else %}
 #DUPL_PRECMD=""
+{% endif %}
+
+# override the used python interpreter, defaults to "python"
+#   e.g. "python2" or "/usr/bin/python2.7"
+{% if item.value.conf.python is defined %}
+PYTHON="{{ item.value.conf.python }}"
+{% else %}
+#PYTHON="python"
 {% endif %}
 
 # exclude folders containing exclusion file (since duplicity 0.5.14)
@@ -220,7 +228,7 @@ TEMP_DIR={{ item.value.conf.temp_dir }}
 # NOTE: This is confidential data. Put it somewhere safe. It can grow quite
 #       big over time so you might want to put it not in the home dir.
 # default '~/.cache/duplicity/duply_<profile>/'
-# if set  '${ARCH_DIR}/<profile>'
+# if set  '\${ARCH_DIR}/<profile>'
 {% if item.value.conf.arch_dir is defined %}
 ARCH_DIR={{ item.value.conf.arch_dir }}
 {% else %}

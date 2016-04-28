@@ -18,6 +18,7 @@ None
 * `duply_backup_profiles.key.conf.gpg_keys_enc`: Public key to encrypt to (**optional**)
 * `duply_backup_profiles.key.conf.gpg_key_sign`: A secret key for signing (**optional**)
 * `duply_backup_profiles.key.conf.gpg_pw_sign`: Signing key passphrase (**optional**)
+* `duply_backup_profiles.key.conf.gpg`: Override the used gpg executable, defaults to `python` (**optional**)
 * `duply_backup_profiles.key.conf.gpg_opts`: GPG options passed from duplicity to gpg process (**optional**)
 * `duply_backup_profiles.key.conf.gpg_test`: Disable preliminary tests (**optional**, set to `false` to disable)
 * `duply_backup_profiles.key.conf.target`: Location of the backup target, [see duplicity manpage](http://duplicity.nongnu.org/duplicity.1.html#sect7)
@@ -25,6 +26,7 @@ None
 * `duply_backup_profiles.key.conf.target_pass`: Password of the backup target (**optional**)
 * `duply_backup_profiles.key.conf.source`: Base directory to backup
 * `duply_backup_profiles.key.conf.dupl_precmd`: A command that runs duplicity (**optional**)
+* `duply_backup_profiles.key.conf.python`: Override the used python interpreter, defaults to `python` (**optional**)
 * `duply_backup_profiles.key.conf.exclude_if_present`: Exclude if present file name (**optional**)
 * `duply_backup_profiles.key.conf.max_age`: Time frame for old backups to keep (**optional**)
 * `duply_backup_profiles.key.conf.max_full_backups`: Number of full backups to keep (**optional**)
