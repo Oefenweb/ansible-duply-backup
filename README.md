@@ -24,6 +24,9 @@ None
 * `duply_backup_profiles.key.conf.target`: Location of the backup target, [see duplicity manpage](http://duplicity.nongnu.org/duplicity.1.html#sect7)
 * `duply_backup_profiles.key.conf.target_user`: Username of the backup target (**optional**)
 * `duply_backup_profiles.key.conf.target_pass`: Password of the backup target (**optional**)
+* `duply_backup_profiles.key.conf.export`: Environment variables to set (**optional**)
+* `duply_backup_profiles.key.conf.export.{n}.name`: Name of the variable (e.g. `AWS_ACCESS_KEY_ID`)
+* `duply_backup_profiles.key.conf.export.{n}.value`: Value of the variable (e.g. `26E1A49CFE81D46C83C2`)
 * `duply_backup_profiles.key.conf.source`: Base directory to backup
 * `duply_backup_profiles.key.conf.dupl_precmd`: A command that runs duplicity (**optional**)
 * `duply_backup_profiles.key.conf.python`: Override the used python interpreter, defaults to `python` (**optional**)

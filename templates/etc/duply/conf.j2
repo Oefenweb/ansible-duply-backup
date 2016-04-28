@@ -114,9 +114,15 @@ TARGET_PASS='{{ item.value.conf.target_pass }}'
 #TARGET_PASS='${DEFAULT_TARGET_PASS}'
 {% endif %}
 # eg. for cloud files backend it might look like this (uncomment for use!)
+{% if item.value.conf.export is defined %}
+{% for export in item.value.conf.export %}
+export {{ export.name }}='{{ export.value }}'
+{% endfor %}
+{% else %}
 #export CLOUDFILES_USERNAME='someuser'
 #export CLOUDFILES_APIKEY='somekey'
 #export CLOUDFILES_AUTHURL ='someurl'
+{% endif %}
 # the following is an incomplete list (<backend>: comma separated env vars list)
 # Azure: AZURE_ACCOUNT_NAME, AZURE_ACCOUNT_KEY
 # Cloudfiles: CLOUDFILES_USERNAME, CLOUDFILES_APIKEY, CLOUDFILES_AUTHURL
