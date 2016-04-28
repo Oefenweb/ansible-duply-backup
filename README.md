@@ -18,7 +18,7 @@ None
 * `duply_backup_profiles.key.conf.gpg_keys_enc`: Public key to encrypt to (**optional**)
 * `duply_backup_profiles.key.conf.gpg_key_sign`: A secret key for signing (**optional**)
 * `duply_backup_profiles.key.conf.gpg_pw_sign`: Signing key passphrase (**optional**)
-* `duply_backup_profiles.key.conf.gpg`: Override the used gpg executable, defaults to `python` (**optional**)
+* `duply_backup_profiles.key.conf.gpg`: Override the used gpg executable, defaults to `gpg` (**optional**)
 * `duply_backup_profiles.key.conf.gpg_opts`: GPG options passed from duplicity to gpg process (**optional**)
 * `duply_backup_profiles.key.conf.gpg_test`: Disable preliminary tests (**optional**, set to `false` to disable)
 * `duply_backup_profiles.key.conf.target`: Location of the backup target, [see duplicity manpage](http://duplicity.nongnu.org/duplicity.1.html#sect7)
