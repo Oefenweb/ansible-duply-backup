@@ -7,8 +7,11 @@
     owner: root
     group: root
     mode: 0700
-  with_dict: duply_backup_profiles
-  tags: [configuration, duply-backup, duply-backup-profile]
+  with_dict: "{{ duply_backup_profiles }}"
+  tags:
+    - configuration
+    - duply-backup
+    - duply-backup-profile
 
 - name: configure configuration files
   template:
@@ -17,16 +20,24 @@
     owner: root
     group: root
     mode: 0600
-  with_dict: duply_backup_profiles
-  tags: [configuration, duply-backup, duply-backup-profile, duply-backup-profile-conf]
+  with_dict: "{{ duply_backup_profiles }}"
+  tags:
+    - configuration
+    - duply-backup
+    - duply-backup-profile
+    - duply-backup-profile-conf
 
 - name: remove obsolete pre scripts
   file:
     path: "{{ duply_backup_profile_directory }}/{{ item.key }}/pre"
     state: absent
-  with_dict: duply_backup_profiles
+  with_dict: "{{ duply_backup_profiles }}"
   when: item.value.pre is not defined or not item.value.pre
-  tags: [configuration, duply-backup, duply-backup-profile, duply-backup-profile-pre]
+  tags:
+    - configuration
+    - duply-backup
+    - duply-backup-profile
+    - duply-backup-profile-pre
 
 - name: copy pre scripts
   copy:
@@ -35,17 +46,25 @@
     owner: root
     group: root
     mode: 0700
-  with_dict: duply_backup_profiles
+  with_dict: "{{ duply_backup_profiles }}"
   when: item.value.pre is defined and item.value.pre
-  tags: [configuration, duply-backup, duply-backup-profile, duply-backup-profile-pre]
+  tags:
+    - configuration
+    - duply-backup
+    - duply-backup-profile
+    - duply-backup-profile-pre
 
 - name: remove obsolete post scripts
   file:
     path: "{{ duply_backup_profile_directory }}/{{ item.key }}/post"
     state: absent
-  with_dict: duply_backup_profiles
+  with_dict: "{{ duply_backup_profiles }}"
   when: item.value.post is not defined or not item.value.post
-  tags: [configuration, duply-backup, duply-backup-profile, duply-backup-profile-post]
+  tags:
+    - configuration
+    - duply-backup
+    - duply-backup-profile
+    - duply-backup-profile-post
 
 - name: copy post scripts
   copy:
@@ -54,9 +73,13 @@
     owner: root
     group: root
     mode: 0700
-  with_dict: duply_backup_profiles
+  with_dict: "{{ duply_backup_profiles }}"
   when: item.value.post is defined and item.value.post
-  tags: [configuration, duply-backup, duply-backup-profile, duply-backup-profile-post]
+  tags:
+    - configuration
+    - duply-backup
+    - duply-backup-profile
+    - duply-backup-profile-post
 
 - name: configure exclude files
   template:
@@ -65,5 +88,9 @@
     owner: root
     group: root
     mode: 0600
-  with_dict: duply_backup_profiles
-  tags: [configuration, duply-backup, duply-backup-profile, duply-backup-profile-exclude]
+  with_dict: "{{ duply_backup_profiles }}"
+  tags:
+    - configuration
+    - duply-backup
+    - duply-backup-profile
+    - duply-backup-profile-exclude

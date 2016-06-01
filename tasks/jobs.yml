@@ -12,5 +12,8 @@
     weekday: "{{ item.weekday | default('*') }}"
     cron_file: duply-backup
     user: root
-  with_items: duply_backup_jobs
-  tags: [configuration, duply-backup, duply-backup-jobs]
+  with_items: "{{ duply_backup_jobs }}"
+  tags:
+    - configuration
+    - duply-backup
+    - duply-backup-jobs
