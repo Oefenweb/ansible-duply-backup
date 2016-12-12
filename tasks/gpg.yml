@@ -13,7 +13,8 @@
     - duply-backup-gpg
 
 - name: import public keys
-  shell: "echo '{{ lookup('file', item) }}' | gpg --import && touch {{ duply_backup_lock_directory }}/{{ item | basename }}"
+  shell: >
+    echo '{{ lookup('file', item) }}' | gpg --import && touch {{ duply_backup_lock_directory }}/{{ item | basename }}
   args:
     creates: "{{ duply_backup_lock_directory }}/{{ item | basename }}"
   with_items: "{{ duply_backup_gpg_pub_keys }}"
@@ -24,7 +25,8 @@
     - duply-backup-gpg-pub-import
 
 - name: import ownertrusts
-  shell: "echo '{{ lookup('file', item) }}' | gpg --import-ownertrust && touch {{ duply_backup_lock_directory }}/{{ item | basename }}"
+  shell: >
+    echo '{{ lookup('file', item) }}' | gpg --import-ownertrust && touch {{ duply_backup_lock_directory }}/{{ item | basename }}
   args:
     creates: "{{ duply_backup_lock_directory }}/{{ item | basename }}"
   notify: update trustdb
@@ -36,7 +38,8 @@
     - duply-backup-gpg-ownertrust-import
 
 - name: import private keys
-  shell: "echo '{{ lookup('file', item) }}' | gpg --allow-secret-key-import --import && touch {{ duply_backup_lock_directory }}/{{ item | basename }}"
+  shell: >
+    echo '{{ lookup('file', item) }}' | gpg --allow-secret-key-import --import && touch {{ duply_backup_lock_directory }}/{{ item | basename }}
   args:
     creates: "{{ duply_backup_lock_directory }}/{{ item | basename }}"
   with_items: "{{ duply_backup_gpg_sec_keys }}"
