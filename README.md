@@ -91,7 +91,7 @@ None
 
 ##### Advance configuration (GPG enabled)
 
-On your Ansible control machine machine in `../../../files/duply-backup/`.
+On your Ansible control machine in `../../../files/duply-backup/`.
 
 ###### Generate a GPG key pair
 ```sh
