@@ -144,8 +144,9 @@ gpg --output E6564C6E.sec.asc --armor --export-secret-key E6564C6E;
         conf:
           gpg_key: 'E6564C6E'
           gpg_pw: 'QUsNMnD6GHUTFSBruSwbJpZBhto='
-          gpg_key_sign: 'E79C7756'
+          gpg_key_sign: 'E6564C6E'
           gpg_pw_sign: 'QUsNMnD6GHUTFSBruSwbJpZBhto='
+          gpg_opts: '--pinentry-mode loopback'
     
           target: 'file:///data/backup/etc'
           source: '/etc'
