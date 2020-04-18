@@ -1,6 +1,7 @@
 # meta file for duply-backup
 ---
 galaxy_info:
+  role_name: duply-backup
   author: Mischa ter Smitten
   company: Oefenweb.nl B.V.
   description: Set up duplicity backups using duply in Debian-like systems
