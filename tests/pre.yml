@@ -1,0 +1,9 @@
+# pre test file for duply-backup
+---
+- name: pre | install dependencies
+  apt:
+    name:
+      - cron
+    state: "{{ apt_install_state | default('latest') }}"
+    update_cache: true
+    cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"

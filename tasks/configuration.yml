@@ -47,7 +47,9 @@
     group: root
     mode: 0700
   with_dict: "{{ duply_backup_profiles }}"
-  when: item.value.pre is defined and item.value.pre
+  when:
+    - item.value.pre is defined
+    - item.value.pre
   tags:
     - configuration
     - duply-backup
@@ -74,7 +76,9 @@
     group: root
     mode: 0700
   with_dict: "{{ duply_backup_profiles }}"
-  when: item.value.post is defined and item.value.post
+  when:
+    - item.value.post is defined
+    - item.value.post
   tags:
     - configuration
     - duply-backup

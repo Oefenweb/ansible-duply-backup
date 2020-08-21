@@ -1,0 +1,14 @@
+# vars file for duply-backup
+---
+duply_backup_profiles:
+  etc:
+    conf:
+      target: 'file:///tmp/duply-backup/target'
+      source: '/etc'
+    excludes:
+      - '+ /etc/skel'
+      - '- **'
+duply_backup_jobs:
+- name: "duply-backup-etc"
+  job: "/usr/local/bin/duply etc status"
+  minute: '*/5'

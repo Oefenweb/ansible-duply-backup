@@ -3,18 +3,9 @@
 - hosts: localhost
   connection: local
   become: true
+  pre_tasks:
+    - name: include vars
+      include_vars: main.yml
+    - include: pre.yml
   roles:
     - ../../
-  vars:
-    duply_backup_profiles:
-      etc:
-        conf:
-          target: 'file:///tmp/duply-backup/target'
-          source: '/etc'
-        excludes:
-          - '+ /etc/skel'
-          - '- **'
-    duply_backup_jobs:
-    - name: "duply-backup-etc"
-      job: "/usr/local/bin/duply etc status"
-      minute: '*/5'
