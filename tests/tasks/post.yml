@@ -1,0 +1,9 @@
+# post test file for duply-backup
+---
+- name: run test
+  shell: >
+    # Test duply backup
+    duply etc backup;
+    # Test duply restore
+    duply etc restore /tmp/duply-backup/restore && sudo test -d /tmp/duply-backup/restore/skel;
+  changed_when: false

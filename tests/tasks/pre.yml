@@ -1,0 +1,16 @@
+# pre test file for duply-backup
+---
+- name: install test dependencies
+  apt:
+    name:
+      - wget
+      - duplicity
+      - cron
+    state: "{{ apt_install_state | default('latest') }}"
+
+- name: setup test
+  shell: >
+    wget -q http://duply.net/tmp/duply.sh -O /usr/local/bin/duply;
+    chmod 0755 /usr/local/bin/duply;
+    mkdir -p /tmp/duply-backup/target;
+  changed_when: false
