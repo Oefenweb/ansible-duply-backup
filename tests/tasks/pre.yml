@@ -13,4 +13,8 @@
     wget -q http://duply.net/tmp/duply.sh -O /usr/local/bin/duply;
     chmod 0755 /usr/local/bin/duply;
     mkdir -p /tmp/duply-backup/target;
+  args:
+    warn: false
   changed_when: false
+  tags:
+    - skip_ansible_lint
