@@ -1,0 +1,27 @@
+# pre test file for duply-backup
+---
+- name: install test dependencies
+  apt:
+    name:
+      - wget
+      - duplicity
+      - cron
+    update_cache: true
+    cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
+    state: "{{ apt_install_state | default('latest') }}"
+
+- name: setup test
+  get_url:
+    url: 'http://duply.net/tmp/duply.sh'
+    dest: /usr/local/bin/duply
+    owner: root
+    group: root
+    mode: 0755
+
+- name: setup test
+  file:
+    path: /tmp/duply-backup/target
+    state: directory
+    owner: root
+    group: root
+    mode: 0755

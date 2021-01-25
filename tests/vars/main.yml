@@ -9,6 +9,6 @@ duply_backup_profiles:
       - '+ /etc/skel'
       - '- **'
 duply_backup_jobs:
-- name: "duply-backup-etc"
-  job: "/usr/local/bin/duply etc status"
-  minute: '*/5'
+  - name: "duply-backup-etc"
+    job: "/usr/local/bin/duply etc status"
+    minute: '*/5'

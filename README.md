@@ -1,5 +1,6 @@
 ## duply-backup
 
+[![CI](https://github.com/Oefenweb/ansible-duply-backup/workflows/CI/badge.svg)](https://github.com/Oefenweb/ansible-duply-backup/actions?query=workflow%3ACI)
 [![Build Status](https://travis-ci.org/Oefenweb/ansible-duply-backup.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-duply-backup) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-duply--backup-blue.svg)](https://galaxy.ansible.com/Oefenweb/duply_backup)
 
 Set up [duplicity](http://duplicity.nongnu.org/) backups using [duply](http://duply.net/) in Debian-like systems.
@@ -147,22 +148,22 @@ gpg --output E6564C6E.sec.asc --armor --export-secret-key E6564C6E;
           gpg_key_sign: 'E6564C6E'
           gpg_pw_sign: 'QUsNMnD6GHUTFSBruSwbJpZBhto='
           gpg_opts: '--pinentry-mode loopback'
-    
+
           target: 'file:///data/backup/etc'
           source: '/etc'
-    
+
           max_age: 1W
           max_fullbkp_age: 1M
-          
+
           verbosity: 5
-          
+
           arch_dir: '/data/backup/.duply-cache'
         pre: ../../../files/duply-backup/pre
         post: ../../../files/duply-backup/post
         excludes:
           - '+ /etc/skel'
           - '- **'
-    
+
     duply_backup_gpg_pub_keys:
       - ../../../files/duply-backup/E6564C6E.pub.asc
     duply_backup_gpg_ownertrusts:
