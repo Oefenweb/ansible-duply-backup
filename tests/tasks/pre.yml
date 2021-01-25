@@ -6,6 +6,8 @@
       - wget
       - duplicity
       - cron
+    update_cache: true
+    cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
     state: "{{ apt_install_state | default('latest') }}"
 
 - name: setup test
