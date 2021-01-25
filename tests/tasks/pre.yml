@@ -11,12 +11,17 @@
     state: "{{ apt_install_state | default('latest') }}"
 
 - name: setup test
-  shell: >
-    wget -q http://duply.net/tmp/duply.sh -O /usr/local/bin/duply;
-    chmod 0755 /usr/local/bin/duply;
-    mkdir -p /tmp/duply-backup/target;
-  args:
-    warn: false
-  changed_when: false
-  tags:
-    - skip_ansible_lint
+  get_url:
+    url: 'http://duply.net/tmp/duply.sh'
+    dest: /usr/local/bin/duply
+    owner: root
+    group: root
+    mode: 0755
+
+- name: setup test
+  file:
+    path: /tmp/duply-backup/target
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
