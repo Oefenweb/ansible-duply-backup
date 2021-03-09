@@ -1,7 +1,7 @@
 ## duply-backup
 
 [![CI](https://github.com/Oefenweb/ansible-duply-backup/workflows/CI/badge.svg)](https://github.com/Oefenweb/ansible-duply-backup/actions?query=workflow%3ACI)
-[![Build Status](https://travis-ci.org/Oefenweb/ansible-duply-backup.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-duply-backup) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-duply--backup-blue.svg)](https://galaxy.ansible.com/Oefenweb/duply_backup)
+[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-duply--backup-blue.svg)](https://galaxy.ansible.com/Oefenweb/duply_backup)
 
 Set up [duplicity](http://duplicity.nongnu.org/) backups using [duply](http://duply.net/) in Debian-like systems.
 
