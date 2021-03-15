@@ -1,6 +1,7 @@
-# meta file for duply-backup
+# meta file
 ---
 galaxy_info:
+  namespace: oefenweb
   role_name: duply-backup
   author: Mischa ter Smitten
   company: Oefenweb.nl B.V.

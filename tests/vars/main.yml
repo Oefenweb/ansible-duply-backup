@@ -1,4 +1,4 @@
-# vars file for duply-backup
+# vars file
 ---
 duply_backup_profiles:
   etc:

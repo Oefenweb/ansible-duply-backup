@@ -1,4 +1,4 @@
-# tasks file for duply-backup
+# tasks file
 ---
 - name: create (profile) directories
   file:

@@ -1,4 +1,4 @@
-# pre test file for duply-backup
+# pre test file
 ---
 - name: install test dependencies
   apt:

@@ -1,4 +1,4 @@
-# tasks file for duply-backup
+# tasks file
 ---
 - include: configuration.yml
 - include: gpg.yml
