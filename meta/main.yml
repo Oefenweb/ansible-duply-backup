@@ -2,7 +2,7 @@
 ---
 galaxy_info:
   namespace: oefenweb
-  role_name: duply-backup
+  role_name: duply_backup
   author: Mischa ter Smitten
   company: Oefenweb.nl B.V.
   description: Set up duplicity backups using duply in Debian-like systems
