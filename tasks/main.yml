@@ -1,5 +1,5 @@
 # tasks file
 ---
-- include: configuration.yml
-- include: gpg.yml
-- include: jobs.yml
+- include_tasks: configuration.yml
+- include_tasks: gpg.yml
+- include_tasks: jobs.yml
