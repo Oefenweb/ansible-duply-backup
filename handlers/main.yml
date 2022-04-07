@@ -1,4 +1,5 @@
 # handlers file
 ---
 - name: update trustdb
-  command: gpg --update-trustdb
+  command: >
+    gpg --update-trustdb
