@@ -1,7 +1,7 @@
 # post test file
 ---
 - name: run test
-  shell: >
+  ansible.builtin.shell: >
     # Test duply backup
     duply etc backup;
     # Test duply restore
