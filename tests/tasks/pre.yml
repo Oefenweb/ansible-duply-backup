@@ -1,7 +1,7 @@
 # pre test file
 ---
 - name: install test dependencies
-  apt:
+  ansible.builtin.apt:
     name:
       - wget
       - duplicity
@@ -11,7 +11,7 @@
     state: "{{ apt_install_state | default('latest') }}"
 
 - name: setup test
-  get_url:
+  ansible.builtin.get_url:
     url: 'http://duply.net/tmp/duply.sh'
     dest: /usr/local/bin/duply
     owner: root
@@ -19,7 +19,7 @@
     mode: 0755
 
 - name: setup test
-  file:
+  ansible.builtin.file:
     path: /tmp/duply-backup/target
     state: directory
     owner: root

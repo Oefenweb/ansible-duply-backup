@@ -1,50 +1,39 @@
 # tasks file
 ---
 - name: create (lock) directory
-  file:
+  ansible.builtin.file:
     path: "{{ duply_backup_lock_directory }}"
     state: directory
     owner: root
     group: root
     mode: 0755
   tags:
-    - configuration
-    - duply-backup
-    - duply-backup-gpg
+    - duply-backup-gpg-directory
 
 - name: import public keys
-  shell: >
+  ansible.builtin.shell: >
     echo '{{ lookup('file', item) }}' | gpg --import && touch {{ duply_backup_lock_directory }}/{{ item | basename }}
   args:
     creates: "{{ duply_backup_lock_directory }}/{{ item | basename }}"
   with_items: "{{ duply_backup_gpg_pub_keys }}"
   tags:
-    - configuration
-    - duply-backup
-    - duply-backup-gpg
     - duply-backup-gpg-pub-import
 
 - name: import ownertrusts
-  shell: >
+  ansible.builtin.shell: >
     echo '{{ lookup('file', item) }}' | gpg --import-ownertrust && touch {{ duply_backup_lock_directory }}/{{ item | basename }}
   args:
     creates: "{{ duply_backup_lock_directory }}/{{ item | basename }}"
   notify: update trustdb
   with_items: "{{ duply_backup_gpg_ownertrusts }}"
   tags:
-    - configuration
-    - duply-backup
-    - duply-backup-gpg
     - duply-backup-gpg-ownertrust-import
 
 - name: import private keys
-  shell: >
+  ansible.builtin.shell: >
     echo '{{ lookup('file', item) }}' | gpg --allow-secret-key-import --batch --import && touch {{ duply_backup_lock_directory }}/{{ item | basename }}
   args:
     creates: "{{ duply_backup_lock_directory }}/{{ item | basename }}"
   with_items: "{{ duply_backup_gpg_sec_keys }}"
   tags:
-    - configuration
-    - duply-backup
-    - duply-backup-gpg
     - duply-backup-gpg-sec-import

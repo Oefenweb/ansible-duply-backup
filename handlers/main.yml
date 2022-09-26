@@ -1,5 +1,5 @@
 # handlers file
 ---
 - name: update trustdb
-  command: >
+  ansible.builtin.command: >
     gpg --update-trustdb

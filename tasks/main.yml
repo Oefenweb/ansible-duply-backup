@@ -1,5 +1,19 @@
 # tasks file
 ---
-- include: configuration.yml
-- include: gpg.yml
-- include: jobs.yml
+- ansible.builtin.include: configuration.yml
+  tags:
+    - configuration
+    - duply-backup
+    - duply-backup-configuration
+
+- ansible.builtin.include: gpg.yml
+  tags:
+    - configuration
+    - duply-backup
+    - duply-backup-gpg
+
+- ansible.builtin.include: jobs.yml
+  tags:
+    - configuration
+    - duply-backup
+    - duply-backup-jobs
