@@ -1,7 +1,7 @@
 # tasks file
 ---
 - name: create (profile) directories
-  file:
+  ansible.builtin.file:
     path: "{{ duply_backup_profile_directory }}/{{ item.key }}"
     state: directory
     owner: root
@@ -9,12 +9,10 @@
     mode: 0700
   with_dict: "{{ duply_backup_profiles }}"
   tags:
-    - configuration
-    - duply-backup
-    - duply-backup-profile
+    - duply-backup-configuration-profile-directories
 
 - name: configure configuration files
-  template:
+  ansible.builtin.template:
     src: etc/duply/conf.j2
     dest: "{{ duply_backup_profile_directory }}/{{ item.key }}/conf"
     owner: root
@@ -22,25 +20,19 @@
     mode: 0600
   with_dict: "{{ duply_backup_profiles }}"
   tags:
-    - configuration
-    - duply-backup
-    - duply-backup-profile
-    - duply-backup-profile-conf
+    - duply-backup-configuration-profile-conf
 
 - name: remove obsolete pre scripts
-  file:
+  ansible.builtin.file:
     path: "{{ duply_backup_profile_directory }}/{{ item.key }}/pre"
     state: absent
   with_dict: "{{ duply_backup_profiles }}"
   when: item.value.pre is not defined or not item.value.pre
   tags:
-    - configuration
-    - duply-backup
-    - duply-backup-profile
-    - duply-backup-profile-pre
+    - duply-backup-configuration-profile-pre
 
 - name: copy pre scripts
-  copy:
+  ansible.builtin.copy:
     src: "{{ item.value.pre }}"
     dest: "{{ duply_backup_profile_directory }}/{{ item.key }}/pre"
     owner: root
@@ -51,25 +43,19 @@
     - item.value.pre is defined
     - item.value.pre
   tags:
-    - configuration
-    - duply-backup
-    - duply-backup-profile
-    - duply-backup-profile-pre
+    - duply-backup-configuration-profile-pre
 
 - name: remove obsolete post scripts
-  file:
+  ansible.builtin.file:
     path: "{{ duply_backup_profile_directory }}/{{ item.key }}/post"
     state: absent
   with_dict: "{{ duply_backup_profiles }}"
   when: item.value.post is not defined or not item.value.post
   tags:
-    - configuration
-    - duply-backup
-    - duply-backup-profile
-    - duply-backup-profile-post
+    - duply-backup-configuration-profile-post
 
 - name: copy post scripts
-  copy:
+  ansible.builtin.copy:
     src: "{{ item.value.post }}"
     dest: "{{ duply_backup_profile_directory }}/{{ item.key }}/post"
     owner: root
@@ -80,13 +66,10 @@
     - item.value.post is defined
     - item.value.post
   tags:
-    - configuration
-    - duply-backup
-    - duply-backup-profile
-    - duply-backup-profile-post
+    - duply-backup-configuration-profile-post
 
 - name: configure exclude files
-  template:
+  ansible.builtin.template:
     src: etc/duply/exclude.j2
     dest: "{{ duply_backup_profile_directory }}/{{ item.key }}/exclude"
     owner: root
@@ -94,7 +77,4 @@
     mode: 0600
   with_dict: "{{ duply_backup_profiles }}"
   tags:
-    - configuration
-    - duply-backup
-    - duply-backup-profile
-    - duply-backup-profile-exclude
+    - duply-backup-configuration-profile-exclude
