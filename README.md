@@ -43,8 +43,10 @@ None
 * `duply_backup_profiles.key.conf.time_separator`: Enables duplicity `--time-separator` option (**optional**, **deprecated**, set to `true` to enable)
 * `duply_backup_profiles.key.conf.short_filenames`: Enables duplicity `--short-filenames` option (**optional**, **deprecated**, set to `true` to enable)
 * `duply_backup_profiles.key.conf.dupl_params`: Additional duplicity command line options. Don't forget to leave a separating space char at the end (**optional**)
-* `duply_backup_profiles.key.pre`: Pre script (**optional**)
-* `duply_backup_profiles.key.post`: Post script (**optional**)
+* `duply_backup_profiles.key.pre`: Pre script; if set tpre is ignored (**optional**)
+* `duply_backup_profiles.key.post`: Post script; if set tpost is ignored (**optional**)
+* `duply_backup_profiles.key.tpre`: Pre script created from Ansible template (**optional**)
+* `duply_backup_profiles.key.tpost`: Post script created from Ansible template (**optional**)
 * `duply_backup_profiles.key.excludes`: A list of glob patterns of included or excluded files / folders (**optional**)
 
 * `duply_backup_gpg_pub_keys`: [default: `[]`]: Public keys to import
