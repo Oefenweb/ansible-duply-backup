@@ -47,7 +47,7 @@
 
 - name: template dynamic pre scripts
   ansible.builtin.template:
-    src: "{{ item.value.tpre }}.j2"
+    src: "{{ item.value.tpre }}"
     dest: "{{ duply_backup_profile_directory }}/{{ item.key }}/pre"
     owner: root
     group: root
@@ -86,7 +86,7 @@
 
 - name: template dynamic post scripts
   ansible.builtin.template:
-    src: "{{ item.value.tpost }}.j2"
+    src: "{{ item.value.tpost }}"
     dest: "{{ duply_backup_profile_directory }}/{{ item.key }}/post"
     owner: root
     group: root
