@@ -11,6 +11,8 @@
 #  GPG_PW='passphrase' - symmetric encryption using passphrase only
 {% if item.value.conf.gpg_key is defined %}
 GPG_KEY='{{ item.value.conf.gpg_key }}'
+{% elif (item.value.conf.gpg_keys_enc is defined) and (item.value.conf.gpg_key_sign is defined) %}
+# GPG_KEY= not in use; see GPG_KEYS_ENC and GPG_KEY_SIGN below
 {% else %}
 GPG_KEY='disabled'
 {% endif %}
