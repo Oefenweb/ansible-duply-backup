@@ -78,7 +78,7 @@ None
 ---
 - hosts: all
   roles:
-  - duply-backup
+  - oefenweb.duply-backup
   vars:
     duply_backup_profiles:
       etc:
@@ -138,7 +138,7 @@ gpg --output E6564C6E.sec.asc --armor --export-secret-key E6564C6E;
 ---
 - hosts: all
   roles:
-  - duply-backup
+  - oefenweb.duply-backup
   vars:
     duply_backup_profiles:
       etc:
