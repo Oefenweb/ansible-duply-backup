@@ -14,7 +14,7 @@ None
 * `duply_backup_profiles`: [default: `{}`]: Duply backup profiles
 * `duply_backup_profiles.key`: The name of the profile (e.g. `etc`)
 * `duply_backup_profiles.key.conf`: Conf declarations
-* `duply_backup_profiles.key.conf.gpg_key`: Encrypt with key (**optional**, omitting will disable encryption)
+* `duply_backup_profiles.key.conf.gpg_key`: Encrypt with key (**optional**, omitting `gpg_key` but including `gpg_keys_enc` and `gpg_key_sign` will enable separate signing and encrypting keys. Omitting two or more options will disable encryption)
 * `duply_backup_profiles.key.conf.gpg_pw`: Symmetric encryption using passphrase only (**optional**)
 * `duply_backup_profiles.key.conf.gpg_keys_enc`: Public key to encrypt to (**optional**)
 * `duply_backup_profiles.key.conf.gpg_key_sign`: A secret key for signing (**optional**)
