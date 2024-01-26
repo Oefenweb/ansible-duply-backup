@@ -1,18 +1,21 @@
 # tasks file
 ---
-- ansible.builtin.import_tasks: configuration.yml
+- name: configuration
+  ansible.builtin.import_tasks: configuration.yml
   tags:
     - configuration
     - duply-backup
     - duply-backup-configuration
 
-- ansible.builtin.import_tasks: gpg.yml
+- name: gpg
+  ansible.builtin.import_tasks: gpg.yml
   tags:
     - configuration
     - duply-backup
     - duply-backup-gpg
 
-- ansible.builtin.import_tasks: jobs.yml
+- name: jobs
+  ansible.builtin.import_tasks: jobs.yml
   tags:
     - configuration
     - duply-backup

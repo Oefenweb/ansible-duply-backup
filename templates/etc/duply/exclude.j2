@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+{{ ansible_managed | comment }}
 
 {% if item.value.excludes is defined and item.value.excludes %}
 {% for exclude in item.value.excludes %}

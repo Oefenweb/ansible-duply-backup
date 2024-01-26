@@ -3,3 +3,4 @@
 - name: update trustdb
   ansible.builtin.command: >
     gpg --update-trustdb
+  changed_when: true

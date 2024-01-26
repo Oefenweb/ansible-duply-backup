@@ -22,13 +22,15 @@ None
 * `duply_backup_profiles.key.conf.gpg`: Override the used gpg executable, defaults to `gpg` (**optional**)
 * `duply_backup_profiles.key.conf.gpg_opts`: GPG options passed from duplicity to gpg process (**optional**)
 * `duply_backup_profiles.key.conf.gpg_test`: Disable preliminary tests (**optional**, set to `false` to disable)
+* `duply_backup_profiles.key.conf.gpg_import`: Disable automatic gpg key importing altogether
+* `duply_backup_profiles.key.conf.gpg_export`: Disable automatic gpg key exporting to profile folder
 * `duply_backup_profiles.key.conf.target`: Location of the backup target, [see duplicity manpage](http://duplicity.nongnu.org/duplicity.1.html#sect7)
 * `duply_backup_profiles.key.conf.target_user`: Username of the backup target (**optional**)
 * `duply_backup_profiles.key.conf.target_pass`: Password of the backup target (**optional**)
 * `duply_backup_profiles.key.conf.export`: Environment variables to set (**optional**)
 * `duply_backup_profiles.key.conf.export.{n}.name`: Name of the variable (e.g. `AWS_ACCESS_KEY_ID`)
 * `duply_backup_profiles.key.conf.export.{n}.value`: Value of the variable (e.g. `26E1A49CFE81D46C83C2`)
-* `duply_backup_profiles.key.conf.source`: Base directory to backup
+* `duply_backup_profiles.key.conf.source`: Base directory to back up
 * `duply_backup_profiles.key.conf.dupl_precmd`: A command that runs duplicity (**optional**)
 * `duply_backup_profiles.key.conf.python`: Override the used python interpreter, defaults to `python` (**optional**)
 * `duply_backup_profiles.key.conf.exclude_if_present`: Exclude if present file name (**optional**)
@@ -39,7 +41,7 @@ None
 * `duply_backup_profiles.key.conf.volsize`: Sets the size of backup chunks (**optional**, in MB's)
 * `duply_backup_profiles.key.conf.verbosity`: Verbosity of output (**optional**)
 * `duply_backup_profiles.key.conf.temp_dir`: Temporary file space. At least the size of the biggest file in backup for a successful restoration process (**optional**)
-* `duply_backup_profiles.key.conf.arch_dir`: Defines a folder that holds unencrypted meta data of the backup, enabling new incrementals without the need to decrypt backend metadata first (**optional**)
+* `duply_backup_profiles.key.conf.arch_dir`: Defines a folder that holds unencrypted metadata of the backup, enabling new incrementals without the need to decrypt backend metadata first (**optional**)
 * `duply_backup_profiles.key.conf.time_separator`: Enables duplicity `--time-separator` option (**optional**, **deprecated**, set to `true` to enable)
 * `duply_backup_profiles.key.conf.short_filenames`: Enables duplicity `--short-filenames` option (**optional**, **deprecated**, set to `true` to enable)
 * `duply_backup_profiles.key.conf.dupl_params`: Additional duplicity command line options. Don't forget to leave a separating space char at the end (**optional**)
