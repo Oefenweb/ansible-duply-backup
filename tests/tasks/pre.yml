@@ -16,7 +16,7 @@
     dest: /usr/local/bin/duply
     owner: root
     group: root
-    mode: 0755
+    mode: '0755'
 
 - name: setup test
   ansible.builtin.file:
@@ -24,4 +24,4 @@
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: '0755'

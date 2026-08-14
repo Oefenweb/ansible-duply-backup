@@ -6,7 +6,7 @@
     state: directory
     owner: root
     group: root
-    mode: 0700
+    mode: '0700'
   with_dict: "{{ duply_backup_profiles }}"
   tags:
     - duply-backup-configuration-profile-directories
@@ -17,7 +17,7 @@
     dest: "{{ duply_backup_profile_directory }}/{{ item.key }}/conf"
     owner: root
     group: root
-    mode: 0600
+    mode: '0600'
   with_dict: "{{ duply_backup_profiles }}"
   tags:
     - duply-backup-configuration-profile-conf
@@ -37,7 +37,7 @@
     dest: "{{ duply_backup_profile_directory }}/{{ item.key }}/pre"
     owner: root
     group: root
-    mode: 0700
+    mode: '0700'
   with_dict: "{{ duply_backup_profiles }}"
   when:
     - item.value.pre is defined
@@ -60,7 +60,7 @@
     dest: "{{ duply_backup_profile_directory }}/{{ item.key }}/post"
     owner: root
     group: root
-    mode: 0700
+    mode: '0700'
   with_dict: "{{ duply_backup_profiles }}"
   when:
     - item.value.post is defined
@@ -74,7 +74,7 @@
     dest: "{{ duply_backup_profile_directory }}/{{ item.key }}/exclude"
     owner: root
     group: root
-    mode: 0600
+    mode: '0600'
   with_dict: "{{ duply_backup_profiles }}"
   tags:
     - duply-backup-configuration-profile-exclude
