@@ -27,7 +27,7 @@
     path: "{{ duply_backup_profile_directory }}/{{ item.key }}/pre"
     state: absent
   with_dict: "{{ duply_backup_profiles }}"
-  when: item.value.pre is not defined or not item.value.pre
+  when: (item.value.pre is not defined or not item.value.pre) or (item.value.tpre is not defined or not item.value.tpre)
   tags:
     - duply-backup-configuration-profile-pre
 
@@ -45,12 +45,28 @@
   tags:
     - duply-backup-configuration-profile-pre
 
+- name: template dynamic pre scripts
+  ansible.builtin.template:
+    src: "{{ item.value.tpre }}"
+    dest: "{{ duply_backup_profile_directory }}/{{ item.key }}/pre"
+    owner: root
+    group: root
+    mode: 0700
+  with_dict: "{{ duply_backup_profiles }}"
+  when:
+    - item.value.tpre is defined
+    - item.value.tpre
+    # Don't install templated version if static version is defined
+    - item.value.pre is not defined
+  tags:
+    - duply-backup-configuration-profile-pre
+
 - name: remove obsolete post scripts
   ansible.builtin.file:
     path: "{{ duply_backup_profile_directory }}/{{ item.key }}/post"
     state: absent
   with_dict: "{{ duply_backup_profiles }}"
-  when: item.value.post is not defined or not item.value.post
+  when: (item.value.post is not defined or not item.value.post) or (item.value.tpost is not defined or not item.value.tpost)
   tags:
     - duply-backup-configuration-profile-post
 
@@ -65,6 +81,22 @@
   when:
     - item.value.post is defined
     - item.value.post
+  tags:
+    - duply-backup-configuration-profile-post
+
+- name: template dynamic post scripts
+  ansible.builtin.template:
+    src: "{{ item.value.tpost }}"
+    dest: "{{ duply_backup_profile_directory }}/{{ item.key }}/post"
+    owner: root
+    group: root
+    mode: 0700
+  with_dict: "{{ duply_backup_profiles }}"
+  when:
+    - item.value.tpost is defined
+    - item.value.tpost
+    # Don't install templated version if static version is defined
+    - item.post is not defined
   tags:
     - duply-backup-configuration-profile-post
 
