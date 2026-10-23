@@ -41,7 +41,7 @@
   with_dict: "{{ duply_backup_profiles }}"
   when:
     - item.value.pre is defined
-    - item.value.pre
+    - item.value.pre | length > 0
   tags:
     - duply-backup-configuration-profile-pre
 
@@ -64,7 +64,7 @@
   with_dict: "{{ duply_backup_profiles }}"
   when:
     - item.value.post is defined
-    - item.value.post
+    - item.value.post | length > 0
   tags:
     - duply-backup-configuration-profile-post
 
